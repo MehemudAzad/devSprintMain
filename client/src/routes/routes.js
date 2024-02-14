@@ -15,12 +15,12 @@ export const routes = createBrowserRouter([
         element:<Main></Main>,
         children:[
             {
-                path:'/',
+                path:'/repository',
                 element:<Repository></Repository>
             },
        
             {
-                path: '/about',
+                path: '/',
                 element:<Home></Home>
             },
 
