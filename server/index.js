@@ -61,7 +61,7 @@ async function run (){
             }
         });
 
-        // Get a particular project
+       // Get a particular project
         app.get('./project/:id', async(req, res) => {
             try {
                 
@@ -74,7 +74,17 @@ async function run (){
                     `, [id]
                 );
 
-                res.json(project.rows[0]);
+                const collaborators = await pool.query(
+                    `
+                    SELECT U.user_id, U.email, U.username, U.user_photo
+                    FROM project_user PU
+                    JOIN users U
+                    ON U.id = PU.user_id
+                    WHERE PU.project_id = $1
+                    `, [id]
+                );
+
+                res.json({project: project.rows[0], collaborators: collaborators.rows});
 
             } catch (error) {
                 console.error('error executing query: ', error);
