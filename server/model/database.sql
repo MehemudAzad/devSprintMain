@@ -18,6 +18,7 @@ CREATE TABLE project_user (
     project_id INTEGER REFERENCES project(id),
     user_id INTEGER REFERENCES users(id),
     PRIMARY KEY (project_id, user_id)
+
 );
 
 CREATE TABLE commit (
@@ -28,3 +29,4 @@ CREATE TABLE commit (
     file_path TEXT,
     commit_message TEXT
 );
+
