@@ -1,0 +1,42 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "   <div class=\"flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse\">"
+  },
+  "keywords": [
+    "<div",
+    "type=\"button\"",
+    "class=\"flex",
+    "text-sm",
+    "text-whit",
+    "bg-green-200",
+    "rounded-full",
+    "md:me-0",
+    "focus:ring-4",
+    "focus:ring-gray-300",
+    "dark:focus:ring-gray-600",
+    "pl-1",
+    "pr-3\"",
+    "id=\"user-menu-button\"",
+    "aria-expanded=\"false\"",
+    "data-dropdown-toggle=\"user-dropdown\"",
+    "data-dropdown-placement=\"bottom\">"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.0.3",
+    "pg": "^8.11.3"
+  }
+}

@@ -28,3 +28,4 @@ CREATE TABLE commit (
     file_path TEXT,
     commit_message TEXT
 );
+
