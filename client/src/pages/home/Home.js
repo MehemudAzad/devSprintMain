@@ -35,7 +35,7 @@ const Home = () => {
             <div className="">
                 <h2 className="text-3xl mb-4">Search by repository </h2>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 w-[70%]">
                              <input className="input w-full"
                                 type="text"
                                 placeholder="Enter repository name"
@@ -46,10 +46,10 @@ const Home = () => {
                                 }} />
                              </div>
 
-                            <div className="mt-3">
+                            <div className="mt-3 w-[70%]">
                                 {projects && 
                                  projects?.map(project =>
-                                    <div onClick={()=>handleRequest(project.id)} className="bg-gray-200 rounded-md p-2">
+                                    <div onClick={()=>handleRequest(project.id)} className="bg-gray-200 rounded-md p-2 my-2 bg-white ">
                                     <Link to={`/repository/${project?.id}`}><p>Repository : <span className="text-blue-500">{project?.name}</span></p></Link>
                                     <Link to={`/view/profile/${project?.creator_id}`}><p >Owner : <span className="text-blue-500">{project?.username}</span></p></Link>
                                     <p></p>
