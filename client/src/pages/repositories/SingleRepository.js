@@ -5,17 +5,15 @@ import { FaPlusCircle } from "react-icons/fa";
 import Submission from "./Submission";
 import Collaborator from "./collaborators/Collaborator";
 import { FaFileDownload } from "react-icons/fa";
-// import InvitationModal from "../collaborations/invitationModal";
-// import userCard from "../collaborations/InvitationCard";
 
 const SingleRepository = () => {
     const {user} = useContext(AuthContext);
     const projects = useLoaderData();
     const collaborators = projects.collaborators;
     const repository = projects.project;
-    const authFlag = false;
+    let authFlag = false;
+    // const [authFlag, setAuthFlag] = useState(false);
     let arrayOfIds = collaborators.map(obj => obj.id);
-
     if (arrayOfIds.includes(user?.id)) {
         authFlag = true;
     } 
@@ -27,7 +25,7 @@ const SingleRepository = () => {
     const [username, setUsername] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
-
+    
     const handleInvitation = async (user_id) => {
         console.log('inside invite functino ' , user_id);
         try{
@@ -175,29 +173,44 @@ const SingleRepository = () => {
 
  
     return ( 
-        <div className="p-5">
+        <div className="p-5 pb-80">
             <div className="grid grid-cols-3">
                 <div className="col-span-2 p-1">   
                     <h1 className="text-3xl text-blue-600">{repository?.name}</h1>
-                    <h2>Submissions: </h2>
                     {
                         authFlag ? 
                         <>
+                        <div className="flex items-center justify-between">
                         <h2 className="text-2xl my-3 flex items-cneter gap-2">Upload Files <FaFileDownload /> </h2>
+                        <div>
+                        <Link to={'/auth/editor'}><button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+Code Editor
+</span>
+</button></Link>
+                        <Link to={'/auth/whiteboard'}><button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+WhiteBoard
+</span>
+</button></Link>
+                        </div>
+
+                        </div>
+                      
                         </> :
                         <>
                               <h2 className="text-2xl my-3 flex items-cneter gap-2">Uploaded Files <FaFileDownload /> </h2>
                         </>
                     }
                     
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between bg-indigo-600 p-2">
                         {
                             authFlag ? <>
-                                <div className="flex items-center gap-5 mb-3">
-                                <input className="btn flex items-center text-xl p-2" type="file" onChange={handleFileChange} />
-                                <button className="btn" onClick={handleFileUpload}>Upload <FaPlusCircle /></button>
+                                <div className="flex items-center gap-5 rounded-t-xl">
+                                <input className="btn btn-primary flex items-center text-xl p-2" type="file"  onChange={handleFileChange} />
+                                <button className="btn btn-primary" onClick={handleFileUpload}>Upload <FaPlusCircle /></button>
                                 </div>
-                                <h2 className="text-2xl">Commits({commits.length})</h2>
+                                <h2 className="text-2xl text-white">Commits({commits.length})</h2>
                             </> : <>
                             <div className="mb-4"></div>
                                 <h2 className="text-2xl ml-0">Commits({commits.length})</h2>
@@ -269,10 +282,11 @@ const SingleRepository = () => {
                             )
                         }
                     </div>
+                    
                 </div>
             </div>
-            
-
+            {/* <CodeEditor></CodeEditor> */}
+            {/* <Canvas></Canvas> */}
         </div>
      );
 }

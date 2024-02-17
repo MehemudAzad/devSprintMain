@@ -12,6 +12,8 @@ import Profile from "../pages/Profile/Profile";
 import ProfileViewer from "../pages/Profile/ProfileViewer";
 import InvitationPage from "../pages/collaborations/invitationPage";
 import HomePage from "../pages/home/HomePage";
+import CodeEditor from "../components/codeEditor/CodeEditor";
+import Canvas from "../components/canvas/Canvas";
 // import InvitationModal from "../pages/collaborations/invitationModal";
 // import InvitationPage from "../pages/collaborations/InvitationPage";
 
@@ -66,6 +68,14 @@ export const routes = createBrowserRouter([
                 path:'/auth/register',
                 element:<Register></Register>
             },
+            {
+                path:'/auth/editor',
+                element:<CodeEditor></CodeEditor>
+            },
+            {
+                path:'/auth/whiteboard',
+                element:<Canvas></Canvas>
+            }
       
             // {
             //     path:'/teacherlogin',

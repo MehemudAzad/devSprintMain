@@ -38,7 +38,7 @@ const Home = () => {
             <div className="flex items-center gap-4">
                              <input className="input w-full"
                                 type="text"
-                                placeholder="Enter username"
+                                placeholder="Enter repository name"
                                 value={username}
                                 onChange={(e) => {
                                     setUsername(e.target.value); 
