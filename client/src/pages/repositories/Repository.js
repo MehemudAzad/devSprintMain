@@ -15,7 +15,7 @@ const Repository = ({repository}) => {
                     {
                         creator_id === user_id ? 
                         <> <p className="bg-base-300 p-1 px-2 rounded-2xl">created by you</p>
-                        </> : <><p className="bg-base-300 p-1 px-2 rounded-2xl">Forked</p>
+                        </> : <><p className="bg-base-300 p-1 px-2 rounded-2xl">Forked from {repository?.creator_name}</p>
                         </>
                      }
                 </div>

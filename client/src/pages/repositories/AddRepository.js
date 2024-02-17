@@ -1,9 +1,19 @@
 import { useContext} from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import RepositoryPage from './RepositoryPage';
 
-const AddRepository = () => {
+const AddRepository = ({getProjects}) => {
     const {user} = useContext(AuthContext);
     const user_id = user?.id;
+
+  //   const getProjects = async ()=>{
+  //     const response = await fetch(`http://localhost:5003/user/project/${user?.id}`);
+  //     const data = await response.json();
+  //     console.log(data);
+  //     setRepositories(data);
+  // }   
+
+  
     const handleSubmit = async (e) => {
       console.log("hello")
         e.preventDefault();
@@ -40,6 +50,7 @@ const AddRepository = () => {
           console.error('Error:', error);
           
         }
+        getProjects();
       };
     
       return (

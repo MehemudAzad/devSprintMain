@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Submission = ({ submission }) => {
-  const { id, file_name } = submission;
+  const { id, file_name, name} = submission;
 
   const handleDownload = async (event) => {
     event.preventDefault();
@@ -28,9 +28,9 @@ const Submission = ({ submission }) => {
   return (
     
       <a href="#" onClick={handleDownload}>
-      <div className="shadow-lg py-6 px-4 my-4 border-l-8 border-indigo-500">
-        <h3 className="text-3xl">{id}. {file_name}</h3>
-        
+      <div className="shadow-lg py-6 px-4 my-4 border-l-8 border-indigo-500 bg-indigo-50">
+        <h3 className="text-2xl">{id}. {file_name}</h3>
+        <p className="text-md text-indigo-600">added by {name}</p>
       </div>
       </a>
     

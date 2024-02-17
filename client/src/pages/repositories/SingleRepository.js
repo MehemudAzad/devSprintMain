@@ -5,6 +5,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import Submission from "./Submission";
 import Collaborator from "./collaborators/Collaborator";
 import { FaFileDownload } from "react-icons/fa";
+import { useLocation, useNavigate} from "react-router-dom";
 
 const SingleRepository = () => {
     const {user} = useContext(AuthContext);
@@ -17,7 +18,6 @@ const SingleRepository = () => {
     if (arrayOfIds.includes(user?.id)) {
         authFlag = true;
     } 
-
     // console.log(collaborators);
     // console.log(repository);
     const [submissions, setSubmissions] = useState([]);
@@ -72,43 +72,43 @@ const SingleRepository = () => {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
-    
-    useEffect(() => {
-        const getSubmissions = async () => {
-            try {
-                console.log('Fetching submissions...');
-                const response = await fetch(`http://localhost:5003/submission/${repository?.id}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Submissions:', data);
-                    setSubmissions(data);
-                } else {
-                    throw new Error('Failed to fetch submissions');
-                }
-            } catch (error) {
-                console.error('Error fetching submissions:', error);
+    const getSubmissions = async () => {
+      try {
+          const response = await fetch(`http://localhost:5003/submission/${repository?.id}`);
+          if (response.ok) {
+              const data = await response.json();
+              setSubmissions(data);
+          } else {
+              throw new Error('Failed to fetch submissions');
+          }
+      } catch (error) {
+          console.error('Error fetching submissions:', error);
+      }
+  };
+
+      const getCommits = async () => {
+        try {
+            const response = await fetch(`http://localhost:5003/commits/${repository?.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Submissions:', data);
+                setCommits(data);
+            } else {
+                throw new Error('Failed to fetch submissions');
             }
-        };
-    
+        } catch (error) {
+            console.error('Error fetching submissions:', error);
+        }
+    };
+
+    useEffect(() => {
+       
+        getSubmissions();
         if (repository?.id) {
             getSubmissions();
         }
 
-        const getCommits = async () => {
-            try {
-                console.log('Fetching commits...');
-                const response = await fetch(`http://localhost:5003/commits/${repository?.id}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Submissions:', data);
-                    setCommits(data);
-                } else {
-                    throw new Error('Failed to fetch submissions');
-                }
-            } catch (error) {
-                console.error('Error fetching submissions:', error);
-            }
-        };
+       
     
         if (repository?.id) {
             getCommits();
@@ -135,11 +135,15 @@ const SingleRepository = () => {
           })
           .then(data => {
             console.log('File uploaded successfully:', data);
+
           })
           .catch(error => {
             console.error('Error uploading file:', error);
           });
         }
+        // navigate(from, {replace: true});
+        getSubmissions();
+        getCommits();
       };
 
 
@@ -174,7 +178,7 @@ const SingleRepository = () => {
  
     return ( 
         <div className="p-5 pb-80">
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 p-1">   
                     <h1 className="text-3xl text-blue-600">{repository?.name}</h1>
                     {
@@ -203,7 +207,7 @@ WhiteBoard
                         </>
                     }
                     
-                    <div className="flex items-center justify-between bg-indigo-600 p-2">
+                    <div className="flex items-center justify-between bg-indigo-950 p-4 rounded-t-md">
                         {
                             authFlag ? <>
                                 <div className="flex items-center gap-5 rounded-t-xl">
@@ -223,7 +227,7 @@ WhiteBoard
                     </div>
                     {/* <button className="btn" onClick={handleSubmit}>Add File <FaPlusCircle /></button> */}
                     {/* display submissions  */}
-                    <div className="shadow-2xl p-2 border-t-4 border-indigo-500">
+                    <div className="shadow-2xl p-2 border-t-4 bg-indigo-200 rounded-b-md">
                     {
                         submissions?.map(submission => 
                             <Submission key={submission?.id} submission = {submission} />
@@ -232,7 +236,7 @@ WhiteBoard
                     </div>
                 </div>
                 {/* display collaborators  */}
-                <div className="bg-indigo-700 p-2">
+                <div className="bg-indigo-950 p-2 rounded-xl">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="text-3xl text-white">Collaborators: </h2>
                         <button className="btn" onClick={()=>document.getElementById('my_modal_4').showModal()}>Invite <FaPlusCircle /></button>
@@ -256,10 +260,17 @@ WhiteBoard
                             <div className="mt-3">
                                 {users && 
                                  users?.map(user =>
-                                    <div onClick={()=>handleInvitation(user.id)} className="bg-gray-200 rounded-md p-2">
-                                    <p>Email: {user.email}</p>
-                                    <p>Username: {user.username}</p>
+                                    <div className="flex items-center justify-between bg-gray-200 rounded-md p-2 my-2">
+                                    <div>
+                                      <p>Email: {user.email}</p>
+                                      <Link to={`/view/profile/${user?.id}`}><p>Username: <span className="text-blue-600 hover:underline">{user.username}</span></p></Link>
+                                    </div>
                                     {/* Display other user data as needed */}
+                                    <div className="modal-action">
+                                      <form method="dialog">
+                                        <button onClick={()=>handleInvitation(user.id)} className="btn btn-primary">Invite</button>
+                                      </form>
+                                    </div>
                                     </div>
                                 )
                                }
@@ -268,7 +279,7 @@ WhiteBoard
                             <div className="modal-action">
                             <form method="dialog">
                                 {/* if there is a button, it will close the modal */}
-                                <button className="btn btn-primary">Clos</button>
+                                <button className="btn btn-primary">Close</button>
                             </form>
                             </div>
                         </div>

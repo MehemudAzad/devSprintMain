@@ -5,7 +5,6 @@ import { AuthContext } from '../../context/AuthProvider';
 // import useTitle from '../../hooks/useTitle';
 
 const Register = () => {
-    // useTitle('Register');
     useTitle('Register')
     const {user, setUser} = useContext(AuthContext);
     const [error, setError] = useState('');
@@ -25,11 +24,6 @@ const Register = () => {
         const password = form.password.value;
         console.log("helo")
         console.log(username, email, password);
-
-        // const navigate = useNavigate();
-    // const location = useLocation();
-    // .state?.from?
-    // const from = location.state?.from?.pathname || '/';
 
         fetch('http://localhost:5003/register', {
             method: 'POST',
@@ -67,13 +61,13 @@ const Register = () => {
 
   return (
     <div>
-         <div className="hero min-h-screen bg-base-200">
+         <div className="hero min-h-screen bg-indigo-950">
             <div className="hero-content grid grid-cols-2 gap-[100px] lg:flex-row-reverse">
                 <div className="text-center lg:text-left ">
-                    <img className='w-[400px] shadow-2xl rounded-2xl' src="" alt="" />
+                    <img className='w-[400px] rounded-2xl' src="" alt="" />
            
                 </div>
-                <div onSubmit={handleSubmit} className="card flex-shrink-0 shadow-2xl bg-base-100 w-[550px]">
+                <div onSubmit={handleSubmit} className="card flex-shrink-0 bg-indigo-100 w-[550px]">
                 <form className="card-body w-[540px] justify-center">
                     <h1 className="text-4xl font-bold">Create an account</h1>
                     <div className="form-control">

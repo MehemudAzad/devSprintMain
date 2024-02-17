@@ -31,7 +31,7 @@ const Home = () => {
     return ( 
 
         
-        <div className="p-5">
+        <div className="">
             <div className="">
                 <h2 className="text-3xl mb-4">Search by repository </h2>
             </div>

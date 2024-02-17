@@ -7,34 +7,36 @@ import { FaDiagramProject } from "react-icons/fa6";
 
 const RepositoryPage = () => {
     const {user} = useContext(AuthContext);
-    const [repositories, setRepositories] = useState([]);
     // const {id} = user;
+    const user_id = user?.id;
+    const [repositories, setRepositories] = useState([]);
     console.log(user?.id);
-
+    
     const getProjects = async ()=>{
-        const response = await fetch(`http://localhost:5003/user/project/${user?.id}`);
+        const response = await fetch(`http://localhost:5003/user/project/${user_id}`);
         const data = await response.json();
-        console.log(data);
+        console.log(user?.id, data);
         setRepositories(data);
     }   
 
     useEffect(()=> { 
         try {
             getProjects();
+            getProjects();
         } catch (error) {
             console.log("Error : problem getting repositories");
         }    
-    }, []);
+    },[]);
     console.log(repositories);
     return ( 
         <div className="">
                 <div className="grid grid-cols-3 p-4">
             <div className="col-span-2 border-t-4 border-neutral-500">
-                <section className=" p-10 bg-indigo-100">
+                <section className=" p-10 bg-indigo-200">
                     <h2 className="text-4xl">Repositories({repositories.length}) </h2>  
                     <div className='grid grid-cols-1 gap-x-6 gap-y-3 mt-4' >
                     {
-                        repositories?.map(repository => 
+                        repositories.map(repository => 
                             <Repository key={repository?.id} repository = {repository} />
                         )
                     }
@@ -60,7 +62,7 @@ const RepositoryPage = () => {
                     <FaDiagramProject  className="text-3xl"/>
                 </div>
                 
-                <AddRepository></AddRepository>
+                <AddRepository getProjects={getProjects}></AddRepository>
             </div>
         </div>
         </div>

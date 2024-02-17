@@ -49,7 +49,7 @@ const Header = () => {
         :
         <>
             <div>
-                <Link to="/auth/login" class="py-4 px-4 text-gray-900 text-lg rounded ">Login</Link>
+                <Link to="/auth/login" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:underline md:p-0 text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">Login</Link>
             </div>
         </>
         }

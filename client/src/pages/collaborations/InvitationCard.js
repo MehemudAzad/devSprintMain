@@ -2,11 +2,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
 
-const InvitationCard = ({invitation}) => {
+const InvitationCard = ({invitation, getInvitations}) => {
     const {user} = useContext(AuthContext);
     const {name, username : creator_name, project_id} = invitation;
     const {id} = user;
-    console.log(invitation)
+    console.log(invitation);
+
     const acceptInvitation = async (user_id)=>{
         console.log('inside invite functino ' , user_id);
         try{
@@ -24,13 +25,14 @@ const InvitationCard = ({invitation}) => {
             throw new Error('Network response was not ok.');
             })
             .then(data => {
-            console.log('File uploaded successfully:', data);
+                console.log('File uploaded successfully:', data);
+                getInvitations();
             })
             .catch(error => {
             console.error('Error uploading file:', error);
             });
         }finally{
-
+            
         }  
     }
 
@@ -51,13 +53,14 @@ const InvitationCard = ({invitation}) => {
             throw new Error('Network response was not ok.');
             })
             .then(data => {
-            console.log('File uploaded successfully:', data);
+                console.log('File uploaded successfully:', data);
+                getInvitations();
             })
             .catch(error => {
             console.error('Error uploading file:', error);
             });
         }finally{
-
+            
         }  
     }
 
