@@ -42,8 +42,16 @@ async function run (){
               const values2 = [userId, 'APPROVED', 'ACCEPTED'];
               const projectResult = await pool.query(query2, values2);
 
+              const points = await pool.query(
+                `
+                SELECT COUNT(*)
+                FROM "commit"
+                WHERE user_id = $1
+                `, [userId]
+              );
 
-              res.json({user: userResult.rows[0], projects: projectResult.rows});
+
+              res.json({user: userResult.rows[0], projects: projectResult.rows, points: points.rows[0].count});
             } catch (error) {
               console.error('Error fetching files:', error);
               res.status(500).send('Error fetching files');
@@ -210,14 +218,13 @@ async function run (){
 
             const projects = await pool.query(
                 `
-                select P.*
-                from project P 
+                select * 
+                from project
                 where id in(
                     SELECT project_id 
                     FROM project_user PU 
                     join users U ON (PU.user_id = $1) 
                     join project P ON (P.id = PU.project_id)
-                    join users U1 ON (U1.id = P.creator_id)
                     WHERE PU.is_approved = $2
                     group by project_id)
                 `, [userId, 'APPROVED']
@@ -227,7 +234,7 @@ async function run (){
 
         } catch (error) {
             console.error('error executing query: ', error);
-            res.status(500).json([]);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     });
 
@@ -257,8 +264,8 @@ async function run (){
         const name = req.params.name;
         console.log(name); 
         try {
-            const query = 'SELECT P.*, U.username, U.email, U.user_photo FROM project P join users U on U.id = P.creator_id WHERE name ILIKE $1 OR category ILIKE $2';
-            const result = await pool.query(query, [`%${name}%`, `%${name}%`]);
+        const query = 'SELECT P.*, U.username, U.email, U.user_photo FROM project P join users U on U.id = P.creator_id WHERE name ILIKE $1 OR category ILIKE $2';
+        const result = await pool.query(query, [`%${name}%`, `%${name}%`]);
     
         // if (result.rowCount === 0) {
         //     // If no project found with the provided category
@@ -439,6 +446,28 @@ async function run (){
         }
     });
 
+    //Get all collaboration requests
+    app.get('/project/requests/:project_id', async(req, res)=> {
+        try {
+            
+            const project_id = req.params.project_id;
+            const requests = await pool.query(
+                `
+                SELECT PU.project_id, PU.user_id, U.username, U.email
+                FROM project_user PU
+                JOIN users U ON U.id = PU.user_id
+                WHERE PU.project_id = $1 AND PU.is_approved = 'REQUESTED'
+                `, [project_id]
+            );
+
+            res.json(requests.rows);
+
+        } catch (error) {
+            console.error('error executing query: ', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    })
+
     /**-=--=-=-=-=-=-=-
      *  FILES 
     -=-=-=-=-=-=-=-=-=*/
@@ -476,26 +505,6 @@ async function run (){
         /**-=--=-=-=-=-=-=-=-=-
      *  COMMITS
     =-=--=-=-=-=-=-=-=-=-=*/
-    //     select U.id, count(C.id)
-    // from users U join commit C ON (U.id = C.user_id)
-    // where U.id = 7
-    // group by U.id;
-    app.get('/commits/user/:user_id', async (req,res) =>{
-        try{
-            const user_id = req.params.user_id;
-            const result = await pool.query(`select U.id, count(C.id)
-            from users U join commit C ON (U.id = C.user_id)
-            where U.id = $1
-            group by U.id`, [user_id]);
-            // const commit_result = result.rows;
-            res.json(result.rows);
-            console.log(result.rows[0]);
-        }catch(error){
-            console.log("Error fetching commits : " , error);
-            res.status(500).send('Error fetching commits');
-        }
-    })
-
       app.get('/commits/:project_id', async (req,res) => {
         try{
             const project_id = req.params.project_id;
@@ -515,7 +524,7 @@ async function run (){
       app.get('/submission/:project_id', async (req, res) => {
         try {
           const projectId = req.params.project_id;
-          const query = 'SELECT S.*, U.username AS name FROM submission S JOIN users U ON (S.user_id = U.id) WHERE project_id = $1';
+          const query = 'SELECT * FROM submission WHERE project_id = $1';
           const values = [projectId];
           const result = await pool.query(query, values);
           res.json(result.rows);
