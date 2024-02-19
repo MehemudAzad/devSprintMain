@@ -2,14 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('./db');
 const multer = require('multer');
-// const bcrypt = require('bcrypt');
 
 const port = process.env.PORT || 5003;
-// const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 const app = express();
-
 
 //middleware
 app.use(cors());
@@ -257,8 +254,8 @@ async function run (){
         const name = req.params.name;
         console.log(name); 
         try {
-        const query = 'SELECT P.*, U.username, U.email, U.user_photo FROM project P join users U on U.id = P.creator_id WHERE name ILIKE $1';
-        const result = await pool.query(query, [`%${name}%`]);
+            const query = 'SELECT P.*, U.username, U.email, U.user_photo FROM project P join users U on U.id = P.creator_id WHERE name ILIKE $1 OR category ILIKE $2';
+            const result = await pool.query(query, [`%${name}%`, `%${name}%`]);
     
         // if (result.rowCount === 0) {
         //     // If no project found with the provided category
@@ -358,7 +355,8 @@ async function run (){
         try {
             const project_id = req.body.project_id;
             const user_id = req.body.user_id;
-            const is_approved = "REQUESTED";
+            const is_approved = 'REQUESTED';
+            console.log(project_id, user_id)
             console.log('requested ', project_id, user_id)
 
             await pool.query(
@@ -476,10 +474,6 @@ async function run (){
         /**-=--=-=-=-=-=-=-=-=-
      *  COMMITS
     =-=--=-=-=-=-=-=-=-=-=*/
-    //     select U.id, count(C.id)
-    // from users U join commit C ON (U.id = C.user_id)
-    // where U.id = 7
-    // group by U.id;
     app.get('/commits/user/:user_id', async (req,res) =>{
         try{
             const user_id = req.params.user_id;
@@ -500,6 +494,20 @@ async function run (){
         try{
             const project_id = req.params.project_id;
             const query =  'SELECT * FROM commit WHERE project_id = $1';
+            const values = [project_id];
+            const result = await pool.query(query, values);
+
+            res.json(result.rows);
+        }catch(error){
+            console.log('Error fetching commits : ', error);
+            res.status(500).send('Error fetching commits');
+        }
+      })
+      app.get('/collaborations/request/:project_id', async (req,res) => {
+        try{
+            const project_id = req.params.project_id;
+            const query =  `select * from project_user PU join users U ON (U.id = PU.user_id) where is_approved = 'REQUESTED' and PU.project_id = $1`
+
             const values = [project_id];
             const result = await pool.query(query, values);
 
