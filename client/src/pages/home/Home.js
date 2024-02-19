@@ -1,8 +1,63 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 const Home = () => {
-    return ( 
-        <>
-            this is home page
-        </>
+    const [submissions, setSubmissions] = useState([]);
+    const [commits, setCommits] = useState([]);
+    const [username, setUsername] = useState('');
+    const [projects, setProjects] = useState([]);
+
+
+    const handleSearch = async () => {
+        try {
+          console.log(username);
+          const response = await fetch(`http://localhost:5003/projects/search/${username}`);
+          if(response.ok) {
+              const data = await response.json();
+              setProjects(data);
+              console.log(data);
+          }
+        } catch (error) {
+          console.error('Error searching for user:', error.response);
+          setProjects(null);
+        }
+      };
+
+
+    const handleRequest = async () => {
+
+    }
+   
+    return (  
+        <div className="ml-10 mt-10">
+            <div className="">
+                <h2 className="text-3xl mb-4">Search for repository </h2>
+            </div>
+            <div className="flex items-center gap-4 w-[70%]">
+                             <input className="input w-full"
+                                type="text"
+                                placeholder="Enter repository name"
+                                value={username}
+                                onChange={(e) => {
+                                    setUsername(e.target.value); 
+                                    handleSearch();
+                                }} />
+                             </div>
+
+                            <div className="mt-3 w-[70%]">
+                                {projects && 
+                                 projects?.map(project =>
+                                    <div onClick={()=>handleRequest(project.id)} className="bg-gray-200 rounded-md p-2 my-2 bg-white ">
+                                    <Link to={`/repository/${project?.id}`}><p>Repository : <span className="text-blue-500">{project?.name}</span></p></Link>
+                                    <Link to={`/view/profile/${project?.creator_id}`}><p >Owner : <span className="text-blue-500">{project?.username}</span></p></Link>
+                                    <p></p>
+                                    {/* Display other user data as needed */}
+                                    </div>
+                                )
+                               }
+
+                            </div>
+        </div>
      );
 }
  

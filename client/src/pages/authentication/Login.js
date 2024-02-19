@@ -8,7 +8,6 @@ const Login = () => {
     const {user, setUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
-    // .state?.from?
     const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = event =>{
@@ -17,8 +16,8 @@ const Login = () => {
         const password = form.password.value;
         const email= form.email.value;
         console.log(email, password);
-        console.log('before login');
-        fetch('http://localhost:5002/login', {
+        // console.log('before login');
+        fetch('http://localhost:5003/login', {
             method: 'POST',
             headers:{
                 'content-type': 'application/json'
@@ -27,39 +26,25 @@ const Login = () => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.user)
-            setUser(data.user);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            console.log(data.userInfo)
+            setUser(data.userInfo);
+            localStorage.setItem('user', JSON.stringify(data.userInfo));
         })
+        console.log(user);
 
-        //get jwt token
-        // fetch('https://assignment-11-server-topaz.vercel.app/jwt', {
-        //     method: 'POST',
-        //     headers:{
-        //         'content-type': 'application/json'
-        //     },
-        //     body:JSON.stringify(user)
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     console.log(data)
-        //     localStorage.setItem('hikaru-token', data.token);
-        // })
-
-        // Navigate()
         navigate(from, {replace: true});
     }
       
     // console.log(user.username);
        
     return ( 
-        <div className="hero min-h-screen bg-base-200">
+        <div className="hero min-h-screen bg-indigo-950">
             <div className="hero-content grid grid-cols-1 md:grid-cols-2 gap-[100px] lg:flex-row-reverse">
                 <div className="text-center lg:text-left ">
                     {/* <img className='w-[400px] shadow-2xl rounded-2xl' src="https://www.pngitem.com/pimgs/m/48-488412_transparent-game-piece-png-chess-pawn-png-png.png" alt="" /> */}
            
                 </div>
-                <div className="card flex-shrink-0 shadow-2xl bg-base-100 w-[550px]">
+                <div className="card flex-shrink-0  bg-indigo-300 w-[550px]">
                 <form onSubmit={handleSubmit} className="card-body w-[540px]">
                     <h1 className="text-4xl font-bold">Login now!</h1>
                     <div className="form-control">
