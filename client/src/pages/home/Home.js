@@ -28,12 +28,10 @@ const Home = () => {
 
     }
    
-    return ( 
-
-        
-        <div className="">
+    return (  
+        <div className="ml-10 mt-10">
             <div className="">
-                <h2 className="text-3xl mb-4">Search by repository </h2>
+                <h2 className="text-3xl mb-4">Search for repository </h2>
             </div>
             <div className="flex items-center gap-4 w-[70%]">
                              <input className="input w-full"

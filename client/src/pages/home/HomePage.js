@@ -1,3 +1,4 @@
+import Profile from "../Profile/Profile";
 import Home from "./Home";
 import HomeActivity from "./HomeActivity";
 

@@ -19,7 +19,6 @@ const Repository = ({repository}) => {
                         </>
                      }
                 </div>
-                {/* <p>Forks :<span>{id}</span> </p> */}
                 <p>{description}</p>
             </div>
      );

@@ -12,19 +12,16 @@ const SingleRepository = () => {
     const projects = useLoaderData();
     const collaborators = projects.collaborators;
     const repository = projects.project;
-    let authFlag = false;
-    // const [authFlag, setAuthFlag] = useState(false);
-    let arrayOfIds = collaborators.map(obj => obj.id);
-    if (arrayOfIds.includes(user?.id)) {
-        authFlag = true;
-    } 
-    // console.log(collaborators);
-    // console.log(repository);
     const [submissions, setSubmissions] = useState([]);
     const [commits, setCommits] = useState([]);
     const [username, setUsername] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    let authFlag = false;
+    let arrayOfIds = collaborators.map(obj => obj.id);
+    if (arrayOfIds.includes(user?.id)) {
+        authFlag = true;
+    } 
     
     const handleInvitation = async (user_id) => {
         console.log('inside invite functino ' , user_id);
@@ -68,7 +65,6 @@ const SingleRepository = () => {
       }
     };
  
-    // console.log(repository); 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
@@ -102,14 +98,10 @@ const SingleRepository = () => {
     };
 
     useEffect(() => {
-       
         getSubmissions();
         if (repository?.id) {
             getSubmissions();
         }
-
-       
-    
         if (repository?.id) {
             getCommits();
         }
@@ -141,13 +133,10 @@ const SingleRepository = () => {
             console.error('Error uploading file:', error);
           });
         }
-        // navigate(from, {replace: true});
         getSubmissions();
         getCommits();
       };
 
-
-      //request  /project/request
       const handleRequest = async () => {
         console.log('requested' , user?.id);
         try{
@@ -188,15 +177,15 @@ const SingleRepository = () => {
                         <h2 className="text-2xl my-3 flex items-cneter gap-2">Upload Files <FaFileDownload /> </h2>
                         <div>
                         <Link to={'/auth/editor'}><button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-Code Editor
-</span>
-</button></Link>
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        Code Editor
+                        </span>
+                        </button></Link>
                         <Link to={'/auth/whiteboard'}><button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-WhiteBoard
-</span>
-</button></Link>
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        WhiteBoard
+                        </span>
+                        </button></Link>
                         </div>
 
                         </div>
@@ -205,8 +194,7 @@ WhiteBoard
                         <>
                               <h2 className="text-2xl my-3 flex items-cneter gap-2">Uploaded Files <FaFileDownload /> </h2>
                         </>
-                    }
-                    
+                    } 
                     <div className="flex items-center justify-between bg-indigo-950 p-4 rounded-t-md">
                         {
                             authFlag ? <>
@@ -222,11 +210,7 @@ WhiteBoard
                             </>
                              
                         }
-                 
-                        
                     </div>
-                    {/* <button className="btn" onClick={handleSubmit}>Add File <FaPlusCircle /></button> */}
-                    {/* display submissions  */}
                     <div className="shadow-2xl p-2 border-t-4 bg-indigo-200 rounded-b-md">
                     {
                         submissions?.map(submission => 
@@ -261,16 +245,16 @@ WhiteBoard
                                 {users && 
                                  users?.map(user =>
                                     <div className="flex items-center justify-between bg-gray-200 rounded-md p-2 my-2">
-                                    <div>
-                                      <p>Email: {user.email}</p>
-                                      <Link to={`/view/profile/${user?.id}`}><p>Username: <span className="text-blue-600 hover:underline">{user.username}</span></p></Link>
-                                    </div>
-                                    {/* Display other user data as needed */}
-                                    <div className="modal-action">
-                                      <form method="dialog">
-                                        <button onClick={()=>handleInvitation(user.id)} className="btn btn-primary">Invite</button>
-                                      </form>
-                                    </div>
+                                      <div>
+                                        <p>Email: {user.email}</p>
+                                        <Link to={`/view/profile/${user?.id}`}><p>Username: <span className="text-blue-600 hover:underline">{user.username}</span></p></Link>
+                                      </div>
+                                      {/* Display other user data as needed */}
+                                      <div className="modal-action">
+                                        <form method="dialog">
+                                          <button onClick={()=>handleInvitation(user.id)} className="btn btn-primary">Invite</button>
+                                        </form>
+                                      </div>
                                     </div>
                                 )
                                }
@@ -296,8 +280,6 @@ WhiteBoard
                     
                 </div>
             </div>
-            {/* <CodeEditor></CodeEditor> */}
-            {/* <Canvas></Canvas> */}
         </div>
      );
 }

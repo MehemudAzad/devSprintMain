@@ -1,7 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
-import Repository from "../pages/repositories/RepositoryPage";
-import Home from "../pages/home/Home";
 import ErrorPage from "../pages/ErrorPage";
 import LoginLayout from "../layout/LoginLayout";
 import Login from "../pages/authentication/Login";
@@ -14,10 +12,6 @@ import InvitationPage from "../pages/collaborations/invitationPage";
 import HomePage from "../pages/home/HomePage";
 import CodeEditor from "../components/codeEditor/CodeEditor";
 import Canvas from "../components/canvas/Canvas";
-// import InvitationModal from "../pages/collaborations/invitationModal";
-// import InvitationPage from "../pages/collaborations/InvitationPage";
-
-
 
 export const routes = createBrowserRouter([
     {
@@ -77,29 +71,8 @@ export const routes = createBrowserRouter([
                 element:<Canvas></Canvas>
             }
       
-            // {
-            //     path:'/teacherlogin',
-            //     element:<TeacherLogin></TeacherLogin>
-            // }
         ]
     },
-    // {//layout for lessons page and lecture display
-    //     path: '/lessons/:id',
-    //     element: <LessonsLayout></LessonsLayout>,
-    //     loader:({params})=> fetch(`http://localhost:5002/lectures/${params.id}`),
-    //     children: [
-    //         {
-    //             path: '/lessons/:id',
-    //             element: <LessonPage></LessonPage>,
-    //             // loader:({params})=> fetch(`http://localhost:5002/lecture/${params.id}`)
-    //         },
-    //         {
-    //             path: '/lessons/:id/lecture/:lecture_id',
-    //             element: <LecturesPage></LecturesPage>,
-    //             loader:({params})=> fetch(`http://localhost:5002/lecture/${params.lecture_id}`)
-    //         }
-    //     ]
-    // },
     {
         path:'*',
         element:<ErrorPage></ErrorPage>
